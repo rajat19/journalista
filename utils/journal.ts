@@ -1,21 +1,21 @@
 import * as fs from 'fs';
-import * as moment from 'moment';
+import moment from 'moment';
 import * as path from 'path';
-import {decryptJournalEntity, encryptJournalEntity} from './hash';
+import {decryptJournalEntity, encryptJournalEntity, CryptoHash } from './hash';
 
 const CURR_DIR = process.cwd();
 const JOURNALS_LIMIT = 50;
 
-export function listJournal(username, encryptedUsername) {
+export function listJournal(username: string, encryptedUsername: string) {
     const filePath = path.join(CURR_DIR, 'store', 'journal.json');
     if (fs.existsSync(filePath)) {
-        const contents: Object = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+        const contents = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
         if (!contents.hasOwnProperty(encryptedUsername)) {
             console.log(`No journals present for user: ${username}`);
         } else {
-            const data = contents[encryptedUsername];
+            const data: Array<CryptoHash> = contents[encryptedUsername];
             try {
-                for(let hash in data) {
+                for(let hash of data) {
                     console.log(decryptJournalEntity(hash));
                 }
             } catch(e) {
@@ -27,20 +27,21 @@ export function listJournal(username, encryptedUsername) {
     }
 };
 
-export function createNewJournal(encryptedUsername, journal) {
+export function createNewJournal(encryptedUsername: string, journal: string) {
     const fileName = 'journal.json';
     const dirName = 'store';
     const dirPath = path.join(CURR_DIR, dirName);
     const filePath = path.join(dirPath, fileName);
-    let contents: Object = {};
+    let contents: any = {};
     if (!fs.existsSync(dirPath)) {
         fs.mkdirSync(dirPath);
     } else {
         contents = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
     }
-    const existingJournals: Array<Object> = contents[encryptedUsername];
-    const date = moment().format('DD MMM YYYY hh:mm a');
+    const existingJournals: Array<Object> = contents.hasOwnProperty(encryptedUsername) ? contents[encryptedUsername] : [];
+    const date = moment(new Date()).format('DD MMM YYYY hh:mm a');
     const completeText = `${date} - ${journal}`;
+    console.log('complete text: ', completeText);
     existingJournals.unshift(encryptJournalEntity(completeText));
     if (existingJournals.length > JOURNALS_LIMIT) {
         existingJournals.pop();

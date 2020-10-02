@@ -5,16 +5,21 @@ const algorithm = 'aes-256-ctr';
 const secretKey = 'vOVH6sdmpNWjRRIqCc7rdxs01lwHzfr3';
 const iv = crypto.randomBytes(16);
 
-export function encryptBcrypt(text) {
+export function encryptBcrypt(text: string) {
     const saltRounds = 10;
     return bcrypt.hashSync(text, saltRounds);
 }
 
-export function compareBcrypt(text, hash) {
+export function compareBcrypt(text: string, hash: string) {
     return bcrypt.compareSync(text, hash);
 }
 
-export function encryptJournalEntity(text) {
+export interface CryptoHash {
+    iv: string
+    content: string
+}
+
+export function encryptJournalEntity(text: string): CryptoHash {
     const cipher = crypto.createCipheriv(algorithm, secretKey, iv);
     const encrypted = Buffer.concat([cipher.update(text), cipher.final()]);
     return {
@@ -23,7 +28,7 @@ export function encryptJournalEntity(text) {
     };
 };
 
-export function decryptJournalEntity(hash) {
+export function decryptJournalEntity(hash: CryptoHash): string {
     const decipher = crypto.createDecipheriv(algorithm, secretKey, Buffer.from(hash.iv, 'hex'));
     const decrpyted = Buffer.concat([decipher.update(Buffer.from(hash.content, 'hex')), decipher.final()]);
     return decrpyted.toString();

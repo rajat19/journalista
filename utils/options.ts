@@ -43,7 +43,7 @@ export const NEW_JOURNAL = [
     name: 'text',
     type: 'input',
     message: 'New Journal Text',
-    validate: (text) => {
+    validate: (text: string) => {
         if (text.length < 1) return 'Journal should be atleast of 1 word.';
         return true;
     },

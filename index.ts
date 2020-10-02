@@ -2,13 +2,13 @@
 
 import * as inquirer from 'inquirer';
 import { encryptBcrypt } from './utils/hash';
-import { checkPassword, registerUser, RegisterResponse } from './utils/login';
+import { checkPassword, registerUser, LoginResponse } from './utils/login';
 import { LOGIN_QUESTIONS, getUserDetailQuestions, JOURNAL_QUESTIONS, NEW_JOURNAL, WANNA_TRY } from './utils/options';
 import { listJournal, createNewJournal } from './utils/journal';
 
 let successfullyLoggedIn = false;
-let username;
-let encryptedUsername;
+let username: string;
+let encryptedUsername: string;
 
 const start = async () => {
 	await loginProcessing();
@@ -20,24 +20,26 @@ const loginProcessing = async() => {
 	if (loginChoice.loginOption === 'login') {
 		const loginAnswers = await inquirer.prompt(getUserDetailQuestions());
 		username = loginAnswers.username;
-		encryptedUsername = encryptBcrypt(username);
-		const encryptedPassword = encryptBcrypt(loginAnswers.password);
-		const isValidLogin = checkPassword(username, loginAnswers.password);
-		if (!isValidLogin) {
-			console.log('Try login processing again');
+		const loginResponse = checkPassword(username, loginAnswers.password);
+		if (!loginResponse.success) {
+			console.log(loginResponse.message);
 			await loginProcessing();
 		};
 		successfullyLoggedIn = true;
+		encryptedUsername = loginResponse.encryptedUsername;
 		console.log(`Successfully logged in as ${username}`);
 	} else {
 		const loginAnswers = await inquirer.prompt(getUserDetailQuestions(true));
 		username = loginAnswers.username;
 		encryptedUsername = encryptBcrypt(username);
 		const encryptedPassword = encryptBcrypt(loginAnswers.password);
-		const registerResponse: RegisterResponse = registerUser(username, encryptedUsername, encryptedPassword);
+		const registerResponse: LoginResponse = registerUser(username, encryptedUsername, encryptedPassword);
 		console.log(registerResponse.message);
 		if (registerResponse.success) successfullyLoggedIn = true;
-		else await loginProcessing();
+		else {
+			encryptedUsername = '';
+			await loginProcessing();
+		}
 	}
 };
 

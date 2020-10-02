@@ -4,38 +4,46 @@ import { compareBcrypt } from './hash';
 
 const CURR_DIR = process.cwd();
 
-export function checkPassword(username, password): boolean {
+export interface LoginResponse {
+    success: boolean
+    message: string
+    encryptedUsername: string
+}
+
+export function checkPassword(username: string, password: string): LoginResponse {
     const filePath = path.join(CURR_DIR, 'store', 'password.json');
+    let message = '';
     if (fs.existsSync(filePath)) {
         const contents = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
         for(let i=0; i<Object.keys(contents).length; i++) {
             const key = Object.keys(contents)[i];
             const value = contents[key];
             if (compareBcrypt(username, key) && compareBcrypt(password, value)) {
-                console.log('Welcome !!');
-                return true;
+                return {
+                    success: true,
+                    message: 'Welcome !!',
+                    encryptedUsername: key
+                }
             }
         }
-        console.log('Invalid username/password combination');
+        message = 'Invalid username/password combination';
     } else {
-        console.log(`No ${filePath} file present. Please register new users`);
+        message = `No ${filePath} file present. Please register new users`
     }
-    return false;
+    return {
+        success: false,
+        message,
+        encryptedUsername: ''
+    }
 };
 
-
-export interface RegisterResponse {
-    success: boolean
-    message: string
-};
-
-export function registerUser(username, encryptedUsername, encryptedPassword): RegisterResponse {
+export function registerUser(username: string, encryptedUsername: string, encryptedPassword: string): LoginResponse {
     let message = '';
     const fileName = 'password.json';
     const dirName = 'store';
     const dirPath = path.join(CURR_DIR, dirName);
     const filePath = path.join(dirPath, fileName);
-    let contents: Object = {};
+    let contents: any = {};
     if (!fs.existsSync(dirPath)) {
         fs.mkdirSync(dirPath);
     } else {
@@ -45,12 +53,12 @@ export function registerUser(username, encryptedUsername, encryptedPassword): Re
         const key = Object.keys(contents)[i];
         if (compareBcrypt(username, key)) {
             message = 'This username may already exists, try a different one';
-            return {success: false, message};
+            return {success: false, message, encryptedUsername: ''};
         }
     }
     contents[encryptedUsername] = encryptedPassword;
     message = 'Successfully registered !!';
     const result: string = JSON.stringify(contents, null, 2);
     fs.writeFileSync(filePath, result);
-    return {success: true, message};
+    return {success: true, message, encryptedUsername};
 };
