@@ -27,6 +27,17 @@ export function listJournal(username: string, encryptedUsername: string) {
     }
 };
 
+export function modifyJournals(journals: Array<CryptoHash>, journal: string) {
+    const date = moment(new Date()).format('DD MMM YYYY hh:mm a');
+    const completeText = `${date} - ${journal}`;
+    console.log('complete text: ', completeText);
+    journals.unshift(encryptJournalEntity(completeText));
+    if (journals.length > JOURNALS_LIMIT) {
+        journals.pop();
+    }
+    return journals;
+}
+
 export function createNewJournal(encryptedUsername: string, journal: string) {
     const fileName = 'journal.json';
     const dirName = 'store';
@@ -38,15 +49,8 @@ export function createNewJournal(encryptedUsername: string, journal: string) {
     } else {
         contents = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
     }
-    const existingJournals: Array<Object> = contents.hasOwnProperty(encryptedUsername) ? contents[encryptedUsername] : [];
-    const date = moment(new Date()).format('DD MMM YYYY hh:mm a');
-    const completeText = `${date} - ${journal}`;
-    console.log('complete text: ', completeText);
-    existingJournals.unshift(encryptJournalEntity(completeText));
-    if (existingJournals.length > JOURNALS_LIMIT) {
-        existingJournals.pop();
-    }
-    contents[encryptedUsername] = existingJournals;
+    const existingJournals: Array<CryptoHash> = contents.hasOwnProperty(encryptedUsername) ? contents[encryptedUsername] : [];
+    contents[encryptedUsername] = modifyJournals(existingJournals, journal);
     const result: string = JSON.stringify(contents, null, 2);
     fs.writeFileSync(filePath, result);
     console.log('Successfully updated journals');
