@@ -1,13 +1,15 @@
 {
-  "name": "journalista",
+  "name": "@rajat19/journalista",
   "version": "1.0.0",
   "description": "Personal journal cli app",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
     "start": "ts-node index.ts",
+    "start:watch": "nodemon --watch src --exec ts-node src/index.ts",
     "lint": "eslint --fix .",
-    "runhash": "ts-node utils/hash.ts"
+    "build": "tsc && shx rm -rf dist/templates && shx cp -r templates dist",
+    "renpack": "ts-node rename-package.ts"
   },
   "engines": {
     "node": ">=8.17.0"
@@ -17,7 +19,7 @@
   },
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "git+https://github.com/rajat19/journalista.git"
   },
   "author": "Rajat Srivastava",
   "license": "MIT",
@@ -34,7 +36,6 @@
     "eslint": "^5.9.0",
     "jshint": "^2.9.5",
     "nodemon": "^2.0.4",
-    "pre-commit": "^1.2.2",
     "shx": "^0.3.2",
     "ts-node": "^9.0.0",
     "typescript": "^4.0.2"
