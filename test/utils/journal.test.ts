@@ -1,4 +1,5 @@
 import { expect } from 'chai';
+import moment from 'moment';
 import { SinonFakeTimers, useFakeTimers } from 'sinon';
 import { CryptoHash, decryptJournalEntity } from '../../utils/hash';
 import { modifyJournals } from '../../utils/journal';
@@ -29,7 +30,9 @@ describe('Modify Journals', () => {
         const newJournal = "My new journal";
         const journals: Array<CryptoHash> = modifyJournals(existingJournals, newJournal);
         const firstJournal: CryptoHash = journals[0];
-        expect(decryptJournalEntity(firstJournal)).to.eql('01 Oct 2020 01:30 pm - My new journal');
+        const date = moment(new Date()).format('DD MMM YYYY hh:mm a');
+        const expected = `${date} - ${newJournal}`;
+        expect(decryptJournalEntity(firstJournal)).to.eql(expected);
     });
 
     it('should add time to journal text', () => {
@@ -46,7 +49,9 @@ describe('Modify Journals', () => {
         const newJournal = "My new journal2";
         const journals: Array<CryptoHash> = modifyJournals(existingJournals, newJournal);
         const firstJournal: CryptoHash = journals[0];
-        expect(decryptJournalEntity(firstJournal)).to.eql('01 Oct 2020 01:30 pm - My new journal2');
+        const date = moment(new Date()).format('DD MMM YYYY hh:mm a');
+        const expected = `${date} - ${newJournal}`;
+        expect(decryptJournalEntity(firstJournal)).to.eql(expected);
     });
 
     it('should remove 50th journal if any new comes', () => {
