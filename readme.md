@@ -14,7 +14,7 @@ between users.
 ## Features
 1. User Management: On starting the application the user is presented with
 either Login or Sign Up options.
-1. Journal Management: After authentication, the user is presented with two
+2. Journal Management: After authentication, the user is presented with two
 options to either list all his previous entries or create a new entry. Maximum 50
 Journal entries is allowed per user. Newer entry after 50 replace the
 oldest entry(like a queue).
@@ -39,7 +39,7 @@ npm install -g @rajat19/journalista
 journalista
 ```
 
-## How to run this project (if you want to code)
+## How to run this project (if you want to code/debug)
 - Make changes to code
 - Then run following commands 
 ```bash
@@ -58,6 +58,11 @@ npm run start
 The system encrypts username/passwords and journals so that these are not visible by anyone just crawling 
 through the repo. Your journals are secure with us.
 
+Two types of encryption is done in this project
+1. bcrypt - hashing using salt - used to encrypt username/password
+2. crypto - aes-256-ctr - used to encrypt/decrypt journals
+
+Code for these encryption/decryption can be found in `utils/hash.ts`
 
 ## Publish
 This package uses github actions to publish to both npm as well as github registries
