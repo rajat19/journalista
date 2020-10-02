@@ -11,6 +11,19 @@ between users.
 - Journal : A text log containing multiple entries.
 - Journal Entry : A piece for text accompanied by a timestamp
 
+## Features
+1. User Management: On starting the application the user is presented with
+either Login or Sign Up options.
+1. Journal Management: After authentication, the user is presented with two
+options to either list all his previous entries or create a new entry. Maximum 50
+Journal entries is allowed per user. Newer entry after 50 replace the
+oldest entry(like a queue).
+3. While showing previous entries each entry is preceded by time in readable
+format and data followed by the text input
+Eg.
+25 Jun 2019 10.30pm - Some text that the user entered
+23 Jun 2019 10.00am - Some text that user entered
+
 ## Installation (Using npm registries)
 There are two ways to install the cli (Do any one)
 
