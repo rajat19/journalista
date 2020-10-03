@@ -1,3 +1,4 @@
+import chalk from 'chalk';
 import * as fs from 'fs';
 import * as path from 'path';
 import { compareBcrypt } from './hash';
@@ -21,14 +22,14 @@ export function checkPassword(username: string, password: string): LoginResponse
             if (compareBcrypt(username, key) && compareBcrypt(password, value)) {
                 return {
                     success: true,
-                    message: 'Welcome !!',
+                    message: chalk.green('Welcome !!'),
                     encryptedUsername: key
                 }
             }
         }
-        message = 'Invalid username/password combination';
+        message = chalk.red('Invalid username/password combination');
     } else {
-        message = `No ${filePath} file present. Please register new users`
+        message = chalk.red(`No ${filePath} file present. Please register new users`);
     }
     return {
         success: false,
@@ -52,12 +53,12 @@ export function registerUser(username: string, encryptedUsername: string, encryp
     for(let i=0; i<Object.keys(contents).length; i++) {
         const key = Object.keys(contents)[i];
         if (compareBcrypt(username, key)) {
-            message = 'This username may already exists, try a different one';
+            message = chalk.red('This username may already exists, try a different one');
             return {success: false, message, encryptedUsername: ''};
         }
     }
     contents[encryptedUsername] = encryptedPassword;
-    message = 'Successfully registered !!';
+    message = chalk.green('Successfully registered !!');
     const result: string = JSON.stringify(contents, null, 2);
     fs.writeFileSync(filePath, result);
     return {success: true, message, encryptedUsername};
