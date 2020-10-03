@@ -25,7 +25,7 @@ Eg.
 23 Jun 2019 10.00am - Some text that user entered
 
 ## Installation (Using npm registries)
-There are two ways to install the cli (Do any one)
+There are two ways to install the cli **(Do any one)**
 
 - From npm registry
 ```bash
@@ -40,20 +40,25 @@ journalista
 ```
 
 ## How to run this project (if you want to code/debug)
+- Install dependencies
+```bash
+npm i
+```
 - Make changes to code
 - Then run following commands 
-```bash
-npm run build && npm link
-journalista
-```
-or for development purposes you can also directly do
-```bash
-npm run start
-```
+    - For development purposes you can directly do
+        ```bash
+        npm run start
+        ```
+    - For build and using journalista command (Alternate)
+        ```bash
+        npm run build && npm link
+        journalista
+        ```
 
 ## What the system does
 1. Allows login/signup using command line
-2. List/Create journals for user -> only authorized users
+2. List/Create journals for authorized users
 
 The system encrypts username/passwords and journals so that these are not visible by anyone just crawling 
 through the repo. Your journals are secure with us.
