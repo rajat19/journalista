@@ -1,6 +1,6 @@
 {
   "name": "@rajat19/journalista",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Personal journal cli app",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -19,7 +19,7 @@
     "node": ">=10"
   },
   "bin": {
-    "jsniper": "./dist/index.js"
+    "journalista": "./dist/index.js"
   },
   "repository": {
     "type": "git",
