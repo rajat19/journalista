@@ -1,4 +1,5 @@
 import * as fs from 'fs';
+import chalk from 'chalk';
 import moment from 'moment';
 import * as path from 'path';
 import {decryptJournalEntity, encryptJournalEntity, CryptoHash } from './hash';
@@ -11,19 +12,20 @@ export function listJournal(username: string, encryptedUsername: string) {
     if (fs.existsSync(filePath)) {
         const contents = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
         if (!contents.hasOwnProperty(encryptedUsername)) {
-            console.log(`No journals present for user: ${username}`);
+            console.log(chalk.red(`No journals present for user: ${username}`));
         } else {
             const data: Array<CryptoHash> = contents[encryptedUsername];
             try {
+                console.log(chalk.blue('You have following journals'));
                 for(let hash of data) {
-                    console.log(decryptJournalEntity(hash));
+                    console.log(chalk.yellow(decryptJournalEntity(hash)));
                 }
             } catch(e) {
                 console.log('Journals might be corrupted', e);
             }
         }
     } else {
-        console.log('No journals exist, try creating a new one');
+        console.log(chalk.red('No journals exist, try creating a new one'));
     }
 };
 
@@ -53,5 +55,5 @@ export function createNewJournal(encryptedUsername: string, journal: string) {
     contents[encryptedUsername] = modifyJournals(existingJournals, journal);
     const result: string = JSON.stringify(contents, null, 2);
     fs.writeFileSync(filePath, result);
-    console.log('Successfully updated journals');
+    console.log(chalk.green('Successfully updated journals'));
 };

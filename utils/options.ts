@@ -6,7 +6,7 @@ export const LOGIN_QUESTIONS = [
     name: 'loginOption',
     type: 'list',
     choices: LOGIN_OPTIONS,
-    message: 'Do you want to login or signup instead'
+    message: 'Do you want to login or signup instead: '
 }
 ];
 
@@ -16,14 +16,14 @@ export function getUserDetailQuestions(isRegister: boolean = false) {
         {
             name: 'username',
             type: 'input',
-            message: `${additionalMsg}Username`,
+            message: `${additionalMsg}Username: `,
         },
         {
             // TODO: validate password and add mask
             name: 'password',
             type: 'password',
             mask: '*',
-            message: `${additionalMsg}Password`
+            message: `${additionalMsg}Password: `
         }
     ];
     return USER_DETAILS_QUESTIONS;
@@ -34,7 +34,7 @@ export const JOURNAL_QUESTIONS = [
     name: 'task',
     type: 'list',
     choices: JOURNAL_OPTIONS,
-    message: 'Do you want to list your journals or create a new one'
+    message: 'Do you want to list your journals or create a new one: '
 }
 ];
 
@@ -54,6 +54,6 @@ export const WANNA_TRY = [
 {
     name: 'retry',
     type: 'confirm',
-    message: 'Wanna Retry the flow'
+    message: 'See journal options again: '
 }
 ];

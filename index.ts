@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+import chalk from 'chalk';
 import * as inquirer from 'inquirer';
 import { encryptBcrypt } from './utils/hash';
 import { checkPassword, registerUser, LoginResponse } from './utils/login';
@@ -27,7 +28,7 @@ const loginProcessing = async() => {
 		};
 		successfullyLoggedIn = true;
 		encryptedUsername = loginResponse.encryptedUsername;
-		console.log(`Successfully logged in as ${username}`);
+		console.log(chalk.green(`Successfully logged in as ${username}`));
 	} else {
 		const loginAnswers = await inquirer.prompt(getUserDetailQuestions(true));
 		username = loginAnswers.username;
