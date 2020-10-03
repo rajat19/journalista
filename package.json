@@ -12,8 +12,11 @@
     "test": "mocha -r ts-node/register test/**/*.test.ts",
     "renpack": "ts-node rename-package.ts"
   },
+  "pre-commit": [
+    "test"
+  ],
   "engines": {
-    "node": ">=8.17.0"
+    "node": ">=10"
   },
   "bin": {
     "jsniper": "./dist/index.js"
@@ -26,7 +29,7 @@
   "license": "MIT",
   "dependencies": {
     "@types/mocha": "^8.0.3",
-    "bcrypt": "^3.0.8",
+    "bcrypt": "^5.0.0",
     "inquirer": "^7.3.3",
     "moment": "^2.29.0"
   },
@@ -40,8 +43,9 @@
     "chai": "^4.2.0",
     "eslint": "^5.9.0",
     "jshint": "^2.9.5",
-    "mocha": "^7.2.0",
+    "mocha": "^8.1.3",
     "nodemon": "^2.0.4",
+    "pre-commit": "^1.2.2",
     "shx": "^0.3.2",
     "sinon": "^9.1.0",
     "ts-node": "^9.0.0",
