@@ -1,3 +1,12 @@
+![License](https://img.shields.io/npm/l/journalista?style=for-the-badge)
+![Build](https://img.shields.io/github/workflow/status/rajat19/journalista/Node.js%20CI?style=for-the-badge)
+![Language](https://img.shields.io/github/languages/top/rajat19/journalista?style=for-the-badge)
+![Dependencies](https://img.shields.io/david/rajat19/journalista?style=for-the-badge)
+![Bundle Size](https://img.shields.io/bundlephobia/min/journalista?style=for-the-badge)
+![Release](https://img.shields.io/github/v/release/rajat19/journalista?style=for-the-badge)
+![Node](https://img.shields.io/node/v/journalista?style=for-the-badge)
+![Last Commit](https://img.shields.io/github/last-commit/rajat19/journalista?style=for-the-badge)
+
 # Journalista
 
 Personal journal cli app
